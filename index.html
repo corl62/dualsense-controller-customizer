@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DualSense Controller Customizer</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 DualSense Controller Customizer</h1>
+            <p class="subtitle">Master your PS5 controller's advanced features</p>
+        </header>
+
+        <!-- Connection Status -->
+        <section class="connection-status">
+            <div id="connectionIndicator" class="indicator disconnected"></div>
+            <span id="connectionText">Waiting for controller...</span>
+        </section>
+
+        <!-- Main Content Grid -->
+        <main class="main-content">
+            <!-- Input Monitoring Panel -->
+            <section class="panel">
+                <h2>📊 Controller Input Monitor</h2>
+                <div class="input-grid">
+                    <!-- Buttons -->
+                    <div class="button-section">
+                        <h3>Buttons</h3>
+                        <div class="buttons-grid">
+                            <div class="button-item">
+                                <div id="btn-cross" class="button-indicator"></div>
+                                <span>Cross (X)</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-circle" class="button-indicator"></div>
+                                <span>Circle (O)</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-square" class="button-indicator"></div>
+                                <span>Square</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-triangle" class="button-indicator"></div>
+                                <span>Triangle</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-l1" class="button-indicator"></div>
+                                <span>L1</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-r1" class="button-indicator"></div>
+                                <span>R1</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-l2" class="button-indicator"></div>
+                                <span>L2</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-r2" class="button-indicator"></div>
+                                <span>R2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analog Sticks -->
+                    <div class="sticks-section">
+                        <h3>Analog Sticks</h3>
+                        <div class="sticks-display">
+                            <div class="stick-container">
+                                <div class="stick-label">Left Stick</div>
+                                <canvas id="leftStickCanvas" class="stick-canvas" width="120" height="120"></canvas>
+                                <div class="stick-values">
+                                    <span id="leftStickX">X: 0</span>
+                                    <span id="leftStickY">Y: 0</span>
+                                </div>
+                            </div>
+                            <div class="stick-container">
+                                <div class="stick-label">Right Stick</div>
+                                <canvas id="rightStickCanvas" class="stick-canvas" width="120" height="120"></canvas>
+                                <div class="stick-values">
+                                    <span id="rightStickX">X: 0</span>
+                                    <span id="rightStickY">Y: 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- D-Pad -->
+                    <div class="dpad-section">
+                        <h3>D-Pad</h3>
+                        <div class="dpad-container">
+                            <div id="dpad-up" class="dpad-button">↑</div>
+                            <div id="dpad-down" class="dpad-button">↓</div>
+                            <div id="dpad-left" class="dpad-button">←</div>
+                            <div id="dpad-right" class="dpad-button">→</div>
+                        </div>
+                    </div>
+
+                    <!-- Special Buttons -->
+                    <div class="special-buttons">
+                        <h3>Special Buttons</h3>
+                        <div class="special-grid">
+                            <div class="button-item">
+                                <div id="btn-share" class="button-indicator"></div>
+                                <span>Share</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-options" class="button-indicator"></div>
+                                <span>Options</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-l3" class="button-indicator"></div>
+                                <span>L3</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-r3" class="button-indicator"></div>
+                                <span>R3</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-ps" class="button-indicator"></div>
+                                <span>PS</span>
+                            </div>
+                            <div class="button-item">
+                                <div id="btn-touchpad" class="button-indicator"></div>
+                                <span>Touchpad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Haptic Feedback Panel -->
+            <section class="panel">
+                <h2>⚡ Haptic Feedback</h2>
+                <div class="haptic-controls">
+                    <div class="control-group">
+                        <label for="hapticIntensity">Intensity:</label>
+                        <input type="range" id="hapticIntensity" min="0" max="100" value="50">
+                        <span id="intensityValue">50%</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="hapticDuration">Duration (ms):</label>
+                        <input type="number" id="hapticDuration" min="10" max="5000" value="200">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Vibration Patterns:</label>
+                        <div class="button-group">
+                            <button id="hapticPulse" class="pattern-btn">Pulse</button>
+                            <button id="hapticRumble" class="pattern-btn">Rumble</button>
+                            <button id="hapticShock" class="pattern-btn">Shock</button>
+                            <button id="hapticCustom" class="pattern-btn">Custom</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="hapticFrequency">Frequency (Hz):</label>
+                        <input type="range" id="hapticFrequency" min="10" max="200" value="50">
+                        <span id="frequencyValue">50 Hz</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Preset Patterns:</label>
+                        <div class="button-group">
+                            <button id="hapticWeak" class="preset-btn">Weak</button>
+                            <button id="hapticMedium" class="preset-btn">Medium</button>
+                            <button id="hapticStrong" class="preset-btn">Strong</button>
+                            <button id="hapticIntense" class="preset-btn">Intense</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <button id="hapticTest" class="action-btn primary">Test Haptic</button>
+                        <button id="hapticStop" class="action-btn secondary">Stop</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Adaptive Triggers Panel -->
+            <section class="panel">
+                <h2>🎯 Adaptive Triggers</h2>
+                <div class="triggers-controls">
+                    <div class="trigger-group">
+                        <h3>Left Trigger (L2)</h3>
+                        <div class="control-group">
+                            <label for="l2Resistance">Resistance:</label>
+                            <input type="range" id="l2Resistance" min="0" max="100" value="50">
+                            <span id="l2ResistanceValue">50%</span>
+                        </div>
+                        <div class="control-group">
+                            <label for="l2Tension">Tension Profile:</label>
+                            <select id="l2Profile">
+                                <option value="linear">Linear</option>
+                                <option value="curve">Curve</option>
+                                <option value="progressive">Progressive</option>
+                                <option value="rigid">Rigid</option>
+                            </select>
+                        </div>
+                        <div class="trigger-preview">
+                            <canvas id="l2Canvas" class="trigger-canvas" width="200" height="100"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="trigger-group">
+                        <h3>Right Trigger (R2)</h3>
+                        <div class="control-group">
+                            <label for="r2Resistance">Resistance:</label>
+                            <input type="range" id="r2Resistance" min="0" max="100" value="50">
+                            <span id="r2ResistanceValue">50%</span>
+                        </div>
+                        <div class="control-group">
+                            <label for="r2Tension">Tension Profile:</label>
+                            <select id="r2Profile">
+                                <option value="linear">Linear</option>
+                                <option value="curve">Curve</option>
+                                <option value="progressive">Progressive</option>
+                                <option value="rigid">Rigid</option>
+                            </select>
+                        </div>
+                        <div class="trigger-preview">
+                            <canvas id="r2Canvas" class="trigger-canvas" width="200" height="100"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="control-group full-width">
+                        <button id="triggersTest" class="action-btn primary">Test Triggers</button>
+                        <button id="triggersReset" class="action-btn secondary">Reset</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Motion Controls Panel -->
+            <section class="panel">
+                <h2>🌀 Motion Controls</h2>
+                <div class="motion-controls">
+                    <div class="motion-section">
+                        <h3>Accelerometer</h3>
+                        <div class="motion-values">
+                            <div class="value-item">
+                                <span class="label">X:</span>
+                                <span id="accelX" class="value">0.00</span>
+                                <div class="progress-bar">
+                                    <div id="accelXBar" class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="value-item">
+                                <span class="label">Y:</span>
+                                <span id="accelY" class="value">0.00</span>
+                                <div class="progress-bar">
+                                    <div id="accelYBar" class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="value-item">
+                                <span class="label">Z:</span>
+                                <span id="accelZ" class="value">0.00</span>
+                                <div class="progress-bar">
+                                    <div id="accelZBar" class="progress-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="motion-section">
+                        <h3>Gyroscope</h3>
+                        <div class="motion-values">
+                            <div class="value-item">
+                                <span class="label">Roll:</span>
+                                <span id="gyroX" class="value">0.00</span>
+                                <div class="progress-bar">
+                                    <div id="gyroXBar" class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="value-item">
+                                <span class="label">Pitch:</span>
+                                <span id="gyroY" class="value">0.00</span>
+                                <div class="progress-bar">
+                                    <div id="gyroYBar" class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="value-item">
+                                <span class="label">Yaw:</span>
+                                <span id="gyroZ" class="value">0.00</span>
+                                <div class="progress-bar">
+                                    <div id="gyroZBar" class="progress-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="motion-visualizer">
+                        <h3>3D Orientation Visualization</h3>
+                        <canvas id="motionCanvas" class="motion-canvas" width="300" height="300"></canvas>
+                    </div>
+
+                    <div class="control-group">
+                        <button id="motionCalibrate" class="action-btn primary">Calibrate Motion</button>
+                        <button id="motionReset" class="action-btn secondary">Reset Values</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Touch Pad Panel -->
+            <section class="panel">
+                <h2>👆 Touch Pad</h2>
+                <div class="touchpad-controls">
+                    <div class="touchpad-canvas-container">
+                        <canvas id="touchpadCanvas" class="touchpad-canvas" width="400" height="240"></canvas>
+                        <p class="touchpad-hint">Touch position will appear above</p>
+                    </div>
+                    <div class="touchpad-info">
+                        <div class="info-item">
+                            <span class="label">Status:</span>
+                            <span id="touchpadStatus">Not Touched</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">X Position:</span>
+                            <span id="touchpadX">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Y Position:</span>
+                            <span id="touchpadY">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Touch ID:</span>
+                            <span id="touchpadID">None</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Presets Panel -->
+            <section class="panel">
+                <h2>💾 Presets & Profiles</h2>
+                <div class="presets-controls">
+                    <div class="control-group">
+                        <label for="presetName">Preset Name:</label>
+                        <input type="text" id="presetName" placeholder="Enter preset name">
+                    </div>
+
+                    <div class="control-group">
+                        <button id="savePreset" class="action-btn primary">Save Preset</button>
+                        <button id="deletePreset" class="action-btn secondary">Delete Selected</button>
+                    </div>
+
+                    <div class="presets-list">
+                        <h3>Saved Presets</h3>
+                        <ul id="presetsList">
+                            <li class="empty-state">No presets saved yet</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Panel -->
+            <section class="panel">
+                <h2>📈 Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Controller</div>
+                        <div id="statController" class="stat-value">Not Connected</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Battery Level</div>
+                        <div id="statBattery" class="stat-value">--%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Connection Type</div>
+                        <div id="statConnection" class="stat-value">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Total Inputs</div>
+                        <div id="statInputs" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Frame Rate</div>
+                        <div id="statFPS" class="stat-value">0 FPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Uptime</div>
+                        <div id="statUptime" class="stat-value">00:00:00</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 DualSense Controller Customizer | Built with ❤️</p>
+            <p><a href="https://github.com/corl62/dualsense-controller-customizer" target="_blank">View on GitHub</a></p>
+        </footer>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/main.js"></script>
+    <script src="js/gamepad.js"></script>
+    <script src="js/haptics.js"></script>
+    <script src="js/motion.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
